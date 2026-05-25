@@ -65,6 +65,10 @@ namespace FoodDiary.Api.Services
             {
                 return false;
             }
+            var weeklyPlan = await _weeklyPlanRepository.GetWeeklyPlanByIdAsync(request.WeeklyPlanId);
+            var foodAlternative = await _foodAlternativeRepository.GetFoodAlternativeByIdAsync(request.FoodAlternativeId);
+            if(weeklyPlan == null || foodAlternative == null)
+                return false;
             meal.DayOfWeek = request.DayOfWeek;
             meal.WeeklyPlanId = request.WeeklyPlanId;
             meal.FoodAlternativeId = request.FoodAlternativeId;

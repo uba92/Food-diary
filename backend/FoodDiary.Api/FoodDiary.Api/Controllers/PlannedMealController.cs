@@ -51,7 +51,7 @@ namespace FoodDiary.Api.Controllers
             var update = await _plannedMealService.UpdatePlannedMealAsync(id, request);
             if(!update)
             {
-                return NotFound();
+                return BadRequest();
             }
             return Ok(update);
         }

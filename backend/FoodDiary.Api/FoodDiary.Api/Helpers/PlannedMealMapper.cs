@@ -23,7 +23,10 @@ namespace FoodDiary.Api.Helpers
                 Id = plannedMeal.Id,
                 DayOfWeek = plannedMeal.DayOfWeek,
                 FoodAlternativeId = plannedMeal.FoodAlternativeId,
-                WeeklyPlanId = plannedMeal.WeeklyPlanId
+                WeeklyPlanId = plannedMeal.WeeklyPlanId,
+                FoodAlternativeName = plannedMeal.FoodAlternative != null ? plannedMeal.FoodAlternative.Name : string.Empty,
+                MealType = plannedMeal.FoodAlternative != null ? plannedMeal.FoodAlternative.MealType : string.Empty,
+                Quantity = plannedMeal.FoodAlternative != null ? plannedMeal.FoodAlternative.Quantity : string.Empty
             };
         }
     }

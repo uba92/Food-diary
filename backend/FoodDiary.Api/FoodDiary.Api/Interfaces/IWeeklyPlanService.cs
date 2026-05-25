@@ -11,5 +11,7 @@ namespace FoodDiary.Api.Interfaces
         Task<WeeklyPlanResponseDto> CreateWeeklyPlanAsync(CreateWeeklyPlanRequest request);
         Task<bool> UpdateWeeklyPlanAsync(int id, UpdateWeeklyPlanRequest request);
         Task<bool> DeleteWeeklyPlanAsync(int id);
+        Task<WeeklyPlanByDayResponseDto?> GetWeeklyPlanByIdWithMealsByDayAsync(int id);
+        Task<List<FoodAlternativeUsageStatsDto>?> GetFoodAlternativeUsageStatsAsync(int id);
     }
 }

@@ -17,7 +17,25 @@ namespace FoodDiary.Api.Services
         public async Task<FoodAlternativeResponseDto> CreateAsync(CreateFoodAlternativeRequest request)
         {
             var requestToEntity = FoodAlternativeMapper.ToEntity(request);
+            if (string.IsNullOrWhiteSpace(request.Name))
+            {
+                throw new ArgumentException("Name is required.");
+            }
 
+            if (string.IsNullOrWhiteSpace(request.MealType))
+            {
+                throw new ArgumentException("Meal type is required.");
+            }
+
+            if (string.IsNullOrWhiteSpace(request.Quantity))
+            {
+                throw new ArgumentException("Quantity is required.");
+            }
+
+            if (request.WeeklyFrequency < 0)
+            {
+                throw new ArgumentException("Weekly frequency cannot be negative.");
+            }
             await _repository.AddFoodAlternativeAsync(requestToEntity);
             await _repository.SaveChangesAsync();
             return FoodAlternativeMapper.ToResponseDto(requestToEntity);
@@ -64,6 +82,25 @@ namespace FoodDiary.Api.Services
             if(entityToUpdate == null)
             {
                 return null;
+            }
+            if (string.IsNullOrWhiteSpace(request.Name))
+            {
+                throw new ArgumentException("Name is required.");
+            }
+
+            if (string.IsNullOrWhiteSpace(request.MealType))
+            {
+                throw new ArgumentException("Meal type is required.");
+            }
+
+            if (string.IsNullOrWhiteSpace(request.Quantity))
+            {
+                throw new ArgumentException("Quantity is required.");
+            }
+
+            if (request.WeeklyFrequency < 0)
+            {
+                throw new ArgumentException("Weekly frequency cannot be negative.");
             }
             entityToUpdate.Name = request.Name;
             entityToUpdate.MealType = request.MealType;

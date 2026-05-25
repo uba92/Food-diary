@@ -25,12 +25,12 @@ namespace FoodDiary.Api.Repositories
 
         public async Task<List<PlannedMeal>> GetAllPlannedMealsAsync()
         {
-            return await _context.PlannedMeals.ToListAsync();
+            return await _context.PlannedMeals.Include(p => p.FoodAlternative).ToListAsync();
         }
 
         public async Task<PlannedMeal?> GetPlannedMealByIdAsync(int id)
         {
-            return await _context.PlannedMeals.FindAsync(id);
+            return await _context.PlannedMeals.Include(p => p.FoodAlternative).FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task SaveChangesAsync()

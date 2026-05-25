@@ -63,5 +63,27 @@ namespace FoodDiary.Api.Controllers
             }
             return NoContent();
         }
+
+        [HttpGet("{id}/by-day")]
+        public async Task<IActionResult> GetWeeklyPlanByDay(int id)
+        {
+            var weeklyPlanByDay = await _weeklyPlanService.GetWeeklyPlanByIdWithMealsByDayAsync(id);
+            if (weeklyPlanByDay == null)
+            {
+                return NotFound();
+            }
+            return Ok(weeklyPlanByDay);
+
+        }
+        [HttpGet("{id}/usage-stats")]
+        public async Task<IActionResult> GetFoodAlternativeUsageStats(int id)
+        {
+            var stats = await _weeklyPlanService.GetFoodAlternativeUsageStatsAsync(id);
+            if (stats == null)
+            {
+                return NotFound();
+            }
+            return Ok(stats);
+        }
     }
 }

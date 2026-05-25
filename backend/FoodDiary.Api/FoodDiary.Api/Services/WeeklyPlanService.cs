@@ -15,6 +15,10 @@ namespace FoodDiary.Api.Services
 
         public async Task<WeeklyPlanResponseDto> CreateWeeklyPlanAsync(CreateWeeklyPlanRequest request)
         {
+            if (request.StartDate >= request.EndDate)
+            {
+                throw new ArgumentException("Start date cannot be later than end date.");
+            }
             var requestToEntity = WeeklyPlanMapper.ToEntity(request);
             await _weeklyPlanRepository.AddWeeklyPlanAsync(requestToEntity);
             await _weeklyPlanRepository.SaveChangesAsync();
@@ -23,8 +27,8 @@ namespace FoodDiary.Api.Services
 
         public async Task<bool> DeleteWeeklyPlanAsync(int id)
         {
-            var entityToDelete = await _weeklyPlanRepository.GetWeeklyPLanByIdAsync(id);
-            if(entityToDelete == null)
+            var entityToDelete = await _weeklyPlanRepository.GetWeeklyPlanByIdAsync(id);
+            if (entityToDelete == null)
             {
                 return false;
             }
@@ -37,7 +41,7 @@ namespace FoodDiary.Api.Services
         {
             var weeklyPlans = await _weeklyPlanRepository.GetAllWeeklyPlansAsync();
             var weeklyPlansDto = new List<WeeklyPlanResponseDto>();
-            foreach(var w in weeklyPlans)
+            foreach (var w in weeklyPlans)
             {
                 var response = WeeklyPlanMapper.ToResponseDto(w);
                 weeklyPlansDto.Add(response);
@@ -47,8 +51,8 @@ namespace FoodDiary.Api.Services
 
         public async Task<WeeklyPlanResponseDto?> GetWeeklyPlanByIdAsync(int id)
         {
-            var weeklyPlan = await _weeklyPlanRepository.GetWeeklyPLanByIdAsync(id);
-            if(weeklyPlan == null)
+            var weeklyPlan = await _weeklyPlanRepository.GetWeeklyPlanByIdAsync(id);
+            if (weeklyPlan == null)
             {
                 return null;
             }
@@ -57,15 +61,56 @@ namespace FoodDiary.Api.Services
 
         public async Task<bool> UpdateWeeklyPlanAsync(int id, UpdateWeeklyPlanRequest request)
         {
-            var entityToUpdate = await _weeklyPlanRepository.GetWeeklyPLanByIdAsync(id);
-            if(entityToUpdate == null)
+            var entityToUpdate = await _weeklyPlanRepository.GetWeeklyPlanByIdAsync(id);
+            if (entityToUpdate == null)
             {
                 return false;
+            }
+            if (request.StartDate >= request.EndDate)
+            {
+                throw new ArgumentException("Start date cannot be later than end date.");
             }
             entityToUpdate.StartDate = request.StartDate;
             entityToUpdate.EndDate = request.EndDate;
             await _weeklyPlanRepository.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<WeeklyPlanByDayResponseDto?> GetWeeklyPlanByIdWithMealsByDayAsync(int id)
+        {
+            var weeklyPlan = await _weeklyPlanRepository.GetWeeklyPlanByIdAsync(id);
+            if (weeklyPlan == null)
+            {
+                return null;
+            }
+            return WeeklyPlanMapper.ToByDayResponseDto(weeklyPlan);
+        }
+
+        public async Task<List<FoodAlternativeUsageStatsDto>?> GetFoodAlternativeUsageStatsAsync(int id)
+        {
+            var weeklyPlan = await _weeklyPlanRepository.GetWeeklyPlanByIdAsync(id);
+            if(weeklyPlan == null)
+            {
+                return null;
+            }
+            var groupedMeals = weeklyPlan.PlannedMeals
+                .GroupBy(pm => pm.FoodAlternativeId);
+
+            var stats = groupedMeals
+                .Select(g =>
+                {
+                    var firstMeal = g.First();
+                    var foodAlternative = firstMeal.FoodAlternative;
+                    return new FoodAlternativeUsageStatsDto
+                    {
+                        FoodAlternativeId = g.Key,
+                        Name = foodAlternative.Name,
+                        WeeklyFrequency = foodAlternative.WeeklyFrequency,
+                        UsedCount = g.Count(),
+                        IsOverLimited = g.Count() > foodAlternative.WeeklyFrequency
+                    };
+                }).ToList();
+            return stats;
         }
     }
 }

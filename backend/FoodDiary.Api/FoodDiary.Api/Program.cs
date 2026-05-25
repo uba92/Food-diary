@@ -1,5 +1,6 @@
 using FoodDiary.Api.Data;
 using FoodDiary.Api.Interfaces;
+using FoodDiary.Api.Middlewares;
 using FoodDiary.Api.Repositories;
 using FoodDiary.Api.Services;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +24,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
-
+app.UseMiddleware<GlobalExceptionHandler>();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
