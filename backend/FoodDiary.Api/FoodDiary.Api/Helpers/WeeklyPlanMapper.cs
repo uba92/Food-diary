@@ -11,8 +11,8 @@ namespace FoodDiary.Api.Helpers
         {
             return new WeeklyPlan
             {
-                StartDate = request.StartDate,
-                EndDate = request.EndDate,
+                StartDate = DateTime.SpecifyKind(request.StartDate, DateTimeKind.Utc),
+                EndDate = DateTime.SpecifyKind(request.EndDate, DateTimeKind.Utc)
             };
         }
 
