@@ -70,8 +70,8 @@ namespace FoodDiary.Api.Services
             {
                 throw new ArgumentException("Start date cannot be later than end date.");
             }
-            entityToUpdate.StartDate = request.StartDate;
-            entityToUpdate.EndDate = request.EndDate;
+            entityToUpdate.StartDate = DateTime.SpecifyKind(request.StartDate, DateTimeKind.Utc);
+            entityToUpdate.EndDate = DateTime.SpecifyKind(request.EndDate, DateTimeKind.Utc);
             await _weeklyPlanRepository.SaveChangesAsync();
             return true;
         }
