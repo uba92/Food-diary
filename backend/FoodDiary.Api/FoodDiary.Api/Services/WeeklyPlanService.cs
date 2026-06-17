@@ -59,12 +59,12 @@ namespace FoodDiary.Api.Services
             return WeeklyPlanMapper.ToResponseDto(weeklyPlan);
         }
 
-        public async Task<bool> UpdateWeeklyPlanAsync(int id, UpdateWeeklyPlanRequest request)
+        public async Task<WeeklyPlanResponseDto?> UpdateWeeklyPlanAsync(int id, UpdateWeeklyPlanRequest request)
         {
             var entityToUpdate = await _weeklyPlanRepository.GetWeeklyPlanByIdAsync(id);
             if (entityToUpdate == null)
             {
-                return false;
+                return null;
             }
             if (request.StartDate >= request.EndDate)
             {
@@ -73,7 +73,7 @@ namespace FoodDiary.Api.Services
             entityToUpdate.StartDate = DateTime.SpecifyKind(request.StartDate, DateTimeKind.Utc);
             entityToUpdate.EndDate = DateTime.SpecifyKind(request.EndDate, DateTimeKind.Utc);
             await _weeklyPlanRepository.SaveChangesAsync();
-            return true;
+            return WeeklyPlanMapper.ToResponseDto(entityToUpdate);
         }
 
         public async Task<WeeklyPlanByDayResponseDto?> GetWeeklyPlanByIdWithMealsByDayAsync(int id)

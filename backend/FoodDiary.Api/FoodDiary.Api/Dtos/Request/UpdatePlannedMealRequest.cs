@@ -8,5 +8,6 @@ namespace FoodDiary.Api.Dtos.Request
         public DayOfWeekType DayOfWeek { get; set; }
         public int WeeklyPlanId { get; set; }
         public int FoodAlternativeId { get; set; }
+        public bool Eaten { get; set; }
     }
 }

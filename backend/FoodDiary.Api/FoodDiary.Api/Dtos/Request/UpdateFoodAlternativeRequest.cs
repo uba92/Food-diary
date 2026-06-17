@@ -7,5 +7,6 @@
         public string Quantity { get; set; } = string.Empty;
         public int WeeklyFrequency { get; set; }
         public string? Notes { get; set; }
+        public string? FoodCategory { get; set; }
     }
 }

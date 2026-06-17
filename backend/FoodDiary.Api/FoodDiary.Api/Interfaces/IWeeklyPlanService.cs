@@ -9,7 +9,7 @@ namespace FoodDiary.Api.Interfaces
         Task<List<WeeklyPlanResponseDto>> GetAllWeeklyPlansAsync();
         Task<WeeklyPlanResponseDto?> GetWeeklyPlanByIdAsync(int id);
         Task<WeeklyPlanResponseDto> CreateWeeklyPlanAsync(CreateWeeklyPlanRequest request);
-        Task<bool> UpdateWeeklyPlanAsync(int id, UpdateWeeklyPlanRequest request);
+        Task<WeeklyPlanResponseDto?> UpdateWeeklyPlanAsync(int id, UpdateWeeklyPlanRequest request);
         Task<bool> DeleteWeeklyPlanAsync(int id);
         Task<WeeklyPlanByDayResponseDto?> GetWeeklyPlanByIdWithMealsByDayAsync(int id);
         Task<List<FoodAlternativeUsageStatsDto>?> GetFoodAlternativeUsageStatsAsync(int id);

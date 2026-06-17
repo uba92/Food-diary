@@ -1,5 +1,6 @@
 ﻿using FoodDiary.Api.Dtos.Request;
 using FoodDiary.Api.Dtos.Response;
+using FoodDiary.Api.Enums;
 using FoodDiary.Api.Helpers;
 using FoodDiary.Api.Interfaces;
 
@@ -16,16 +17,21 @@ namespace FoodDiary.Api.Services
             _foodAlternativeRepository = foodAlternativeRepository;
             _weeklyPlanRepository = weeklyPlanRepository;
         }
-        public async Task<PlannedMealResponseDto?> CreatePlannedMealAsync(CreatePlannedMealRequest request)
+        public async Task<PlannedMealResponseDto> CreatePlannedMealAsync(CreatePlannedMealRequest request)
         {
+            if (!Enum.IsDefined(typeof(DayOfWeekType), request.DayOfWeek))
+            {
+                throw new ArgumentException("Invalid day of week.");
+            }
             var weeklyPlan = await _weeklyPlanRepository.GetWeeklyPlanByIdAsync(request.WeeklyPlanId);
             var foodAlternative = await _foodAlternativeRepository.GetFoodAlternativeByIdAsync(request.FoodAlternativeId);
             if(foodAlternative == null || weeklyPlan == null)
             {
-                return null;
+                throw new ArgumentException("Invalid WeeklyPlanId or FoodAlternativeId.");
             }
             var meal = await _plannedMealRepository.AddPlannedMealAsync(PlannedMealMapper.ToEntity(request));
-            
+            meal.FoodAlternative = foodAlternative;
+
             await _plannedMealRepository.SaveChangesAsync();
             return PlannedMealMapper.ToResponseDto(meal);
         }
@@ -58,22 +64,28 @@ namespace FoodDiary.Api.Services
             return PlannedMealMapper.ToResponseDto(meal);
         }
 
-        public async Task<bool> UpdatePlannedMealAsync(int id, UpdatePlannedMealRequest request)
+        public async Task<PlannedMealResponseDto?> UpdatePlannedMealAsync(int id, UpdatePlannedMealRequest request)
         {
+            if (!Enum.IsDefined(typeof(DayOfWeekType), request.DayOfWeek))
+            {
+                throw new ArgumentException("Invalid day of week.");
+            }
             var meal = await _plannedMealRepository.GetPlannedMealByIdAsync(id);
             if(meal == null)
             {
-                return false;
+                return null;
             }
             var weeklyPlan = await _weeklyPlanRepository.GetWeeklyPlanByIdAsync(request.WeeklyPlanId);
             var foodAlternative = await _foodAlternativeRepository.GetFoodAlternativeByIdAsync(request.FoodAlternativeId);
             if(weeklyPlan == null || foodAlternative == null)
-                return false;
+                throw new ArgumentException("Invalid WeeklyPlanId or FoodAlternativeId.");
             meal.DayOfWeek = request.DayOfWeek;
             meal.WeeklyPlanId = request.WeeklyPlanId;
             meal.FoodAlternativeId = request.FoodAlternativeId;
+            meal.Eaten = request.Eaten;
+            meal.FoodAlternative = foodAlternative;
             await _plannedMealRepository.SaveChangesAsync();
-            return true;
+            return PlannedMealMapper.ToResponseDto(meal);
         }
     }
 }

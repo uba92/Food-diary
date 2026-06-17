@@ -29,6 +29,7 @@ namespace FoodDiary.Api.Helpers
                     DayOfWeek = pm.DayOfWeek,
                     FoodAlternativeId = pm.FoodAlternativeId,
                     WeeklyPlanId = pm.WeeklyPlanId,
+                    Eaten = pm.Eaten,
                     FoodAlternativeName = pm.FoodAlternative != null ? pm.FoodAlternative.Name : string.Empty,
                     MealType = pm.FoodAlternative != null ? pm.FoodAlternative.MealType : string.Empty,
                     Quantity = pm.FoodAlternative != null ? pm.FoodAlternative.Quantity : string.Empty

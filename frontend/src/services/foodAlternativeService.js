@@ -9,3 +9,12 @@ export const createFoodAlternative = async (data) => {
   const response = await axiosClient.post("/foodalternatives", data);
   return response.data;
 };
+
+export const updateFoodAlternative = async (id, data) => {
+  const response = await axiosClient.put(`/foodalternatives/${id}`, data);
+  return response.data;
+};
+
+export const deleteFoodAlternative = async (id) => {
+  await axiosClient.delete(`/foodalternatives/${id}`);
+};

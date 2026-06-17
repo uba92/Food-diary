@@ -14,7 +14,8 @@ namespace FoodDiary.Api.Helpers
                 MealType = request.MealType,
                 Quantity = request.Quantity,
                 WeeklyFrequency = request.WeeklyFrequency,
-                Notes = request.Notes
+                Notes = request.Notes,
+                FoodCategory = request.FoodCategory
             };
         }
 
@@ -27,7 +28,8 @@ namespace FoodDiary.Api.Helpers
                 MealType = foodAlternative.MealType,
                 Quantity = foodAlternative.Quantity,
                 WeeklyFrequency = foodAlternative.WeeklyFrequency,
-                Notes = foodAlternative.Notes
+                Notes = foodAlternative.Notes,
+                FoodCategory = foodAlternative.FoodCategory
             };
         }
     }

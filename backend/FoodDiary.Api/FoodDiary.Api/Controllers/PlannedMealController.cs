@@ -36,11 +36,7 @@ namespace FoodDiary.Api.Controllers
         public async Task<IActionResult> AddPlannedMeal(CreatePlannedMealRequest request)
         {
             var meal = await _plannedMealService.CreatePlannedMealAsync(request);
-            if(meal == null)
-            {
-                return BadRequest("Invalid WeeklyPlanId or FoodAlternativeId.");
-            }
-            return CreatedAtAction(nameof(GetPlannedMeal), 
+            return CreatedAtAction(nameof(GetPlannedMeal),
                 new {id = meal.Id},
                 meal);
         }
@@ -49,9 +45,9 @@ namespace FoodDiary.Api.Controllers
         public async Task<IActionResult> UpdatePlannedMeal(int id, UpdatePlannedMealRequest request)
         {
             var update = await _plannedMealService.UpdatePlannedMealAsync(id, request);
-            if(!update)
+            if(update == null)
             {
-                return BadRequest();
+                return NotFound();
             }
             return Ok(update);
         }

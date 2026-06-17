@@ -46,7 +46,7 @@ namespace FoodDiary.Api.Controllers
         public async Task<IActionResult> UpdateWeeklyPlan(int id, UpdateWeeklyPlanRequest request)
         {
             var updatedWeeklyPlan = await _weeklyPlanService.UpdateWeeklyPlanAsync(id, request);
-            if (!updatedWeeklyPlan)
+            if (updatedWeeklyPlan == null)
             {
                 return NotFound();
             }

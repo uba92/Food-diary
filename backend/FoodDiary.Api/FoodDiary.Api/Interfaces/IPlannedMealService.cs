@@ -7,8 +7,8 @@ namespace FoodDiary.Api.Interfaces
     {
         Task<List<PlannedMealResponseDto>> GetAllPlannedMealsAsync();
         Task<PlannedMealResponseDto?> GetPlannedMealByIdAsync(int id);
-        Task<PlannedMealResponseDto?> CreatePlannedMealAsync(CreatePlannedMealRequest request);
+        Task<PlannedMealResponseDto> CreatePlannedMealAsync(CreatePlannedMealRequest request);
         Task<bool> DeletePlannedMealAsync(int id);
-        Task<bool> UpdatePlannedMealAsync(int id, UpdatePlannedMealRequest request);
+        Task<PlannedMealResponseDto?> UpdatePlannedMealAsync(int id, UpdatePlannedMealRequest request);
     }
 }

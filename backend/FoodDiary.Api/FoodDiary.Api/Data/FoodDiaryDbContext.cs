@@ -10,5 +10,6 @@ namespace FoodDiary.Api.Data
         public DbSet<FoodAlternative> FoodAlternatives { get; set; }
         public DbSet<WeeklyPlan> WeeklyPlans { get; set; }
         public DbSet<PlannedMeal> PlannedMeals { get; set; }
+        public DbSet<SymptomEntry> SymptomEntries { get; set; }
     }
 }

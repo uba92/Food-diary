@@ -107,6 +107,7 @@ namespace FoodDiary.Api.Services
             entityToUpdate.Quantity = request.Quantity;
             entityToUpdate.WeeklyFrequency = request.WeeklyFrequency;
             entityToUpdate.Notes = request.Notes;
+            entityToUpdate.FoodCategory = request.FoodCategory;
 
             await _repository.SaveChangesAsync();
             return FoodAlternativeMapper.ToResponseDto(entityToUpdate);

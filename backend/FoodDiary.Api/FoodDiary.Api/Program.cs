@@ -7,6 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// QuestPDF Community license (gratuita sotto la soglia di fatturato prevista).
+QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -18,6 +21,9 @@ builder.Services.AddScoped<IWeeklyPlanRepository, WeeklyPlanRepository>();
 builder.Services.AddScoped<IWeeklyPlanService, WeeklyPlanService>();
 builder.Services.AddScoped<IPlannedMealRepository, PlannedMealRepository>();
 builder.Services.AddScoped<IPlannedMealService, PlannedMealService>();
+builder.Services.AddScoped<ISymptomEntryRepository, SymptomEntryRepository>();
+builder.Services.AddScoped<ISymptomEntryService, SymptomEntryService>();
+builder.Services.AddScoped<IReportService, ReportService>();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

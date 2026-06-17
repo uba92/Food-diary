@@ -30,6 +30,9 @@ namespace FoodDiary.Api.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("FoodCategory")
+                        .HasColumnType("text");
+
                     b.Property<string>("MealType")
                         .IsRequired()
                         .HasColumnType("text");
@@ -64,6 +67,9 @@ namespace FoodDiary.Api.Migrations
                     b.Property<int>("DayOfWeek")
                         .HasColumnType("integer");
 
+                    b.Property<bool>("Eaten")
+                        .HasColumnType("boolean");
+
                     b.Property<int>("FoodAlternativeId")
                         .HasColumnType("integer");
 
@@ -77,6 +83,40 @@ namespace FoodDiary.Api.Migrations
                     b.HasIndex("WeeklyPlanId");
 
                     b.ToTable("PlannedMeals");
+                });
+
+            modelBuilder.Entity("FoodDiary.Api.Models.SymptomEntry", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("FoodAlternativeId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("MealType")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("OccurredAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Severity")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FoodAlternativeId");
+
+                    b.ToTable("SymptomEntries");
                 });
 
             modelBuilder.Entity("FoodDiary.Api.Models.WeeklyPlan", b =>
@@ -115,6 +155,15 @@ namespace FoodDiary.Api.Migrations
                     b.Navigation("FoodAlternative");
 
                     b.Navigation("WeeklyPlan");
+                });
+
+            modelBuilder.Entity("FoodDiary.Api.Models.SymptomEntry", b =>
+                {
+                    b.HasOne("FoodDiary.Api.Models.FoodAlternative", "FoodAlternative")
+                        .WithMany()
+                        .HasForeignKey("FoodAlternativeId");
+
+                    b.Navigation("FoodAlternative");
                 });
 
             modelBuilder.Entity("FoodDiary.Api.Models.WeeklyPlan", b =>

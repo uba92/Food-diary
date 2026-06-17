@@ -8,6 +8,7 @@ namespace FoodDiary.Api.Models
         public DayOfWeekType DayOfWeek { get; set; }
         public int WeeklyPlanId { get; set; }
         public int FoodAlternativeId { get; set; }
+        public bool Eaten { get; set; }
         public WeeklyPlan WeeklyPlan { get; set; } = null!;
         public FoodAlternative FoodAlternative { get; set; } = null!;
     }
